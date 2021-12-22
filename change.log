@@ -1,0 +1,10 @@
+      Version 1.2
+        Paul Gallagher   * Added support for Short URLs (shorturl package)
+        Lewis Cunningham * Added install.sql
+                         * Added change.log
+      
+      Version: 1.1
+        Lewis Cunningham * Added support for proxy
+                         
+      Version 1.0
+        Lewis Cunningham * Initial release

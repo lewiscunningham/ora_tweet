@@ -26,4 +26,3 @@ END ora_tweet;
 
 sho err
 
-exit

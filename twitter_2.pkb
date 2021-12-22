@@ -8,8 +8,7 @@ AS
       Twitter: oracle_ace
       Web: http://database-geek.com
       License:  Free Use
-      Version: 1.1
-      
+     
   */
   
   
@@ -42,7 +41,7 @@ AS
 					  
     -- encoded status tring                  
     v_status := utl_url.escape(
-      url => 'status=' || SUBSTR(p_string,1,140));
+      url => 'status=' || SUBSTR( short_url.encode_text(p_string) ,1,140));
       
     -- Authenticate via proxy
     -- Proxy string looks like 'http://username:password@proxy.com'  
@@ -131,7 +130,4 @@ AS
 END ora_tweet;
 /
 
-sho err
-
-exit
 
