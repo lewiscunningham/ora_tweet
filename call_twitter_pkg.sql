@@ -6,7 +6,7 @@ BEGIN
     (
       p_user => 'twitter_username',
       p_pwd => 'twitter_password',
-      p_string => 'ora_tweet v1.0 is complete!' )
+      p_string => 'ora_tweet v1.1 is complete!' )
   THEN
     dbms_output.put_line('Success!');
   ELSE

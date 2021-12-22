@@ -1,5 +1,18 @@
 CREATE OR REPLACE PACKAGE BODY ora_tweet
 AS  
+
+  /*  ORA_TWEET
+      Author:  Lewis Cunningham
+      Date:  Marchish, 2009
+      Email:  lewisc@rocketmail.com
+      Twitter: oracle_ace
+      Web: http://database-geek.com
+      License:  Free Use
+      Version: 1.1
+      
+  */
+  
+  
   twit_host VARCHAR2(255) := 'twitter.com';
   twit_protocol VARCHAR2(10) := 'http://';
   
@@ -10,14 +23,16 @@ AS
     (
       p_user IN VARCHAR2,
       p_pwd IN VARCHAR2,
-      p_string IN VARCHAR2 )
+      p_string IN VARCHAR2,
+      p_proxy_url IN VARCHAR2 DEFAULT NULL,
+      p_no_domains IN VARCHAR2 DEFAULT NULL )
     RETURN BOOLEAN
   AS
-    v_req   UTL_HTTP.REQ;
-    v_resp  UTL_HTTP.RESP;
-    v_value VARCHAR2(1024);
-    v_status VARCHAR2(160); 
-    v_call VARCHAR2(2000);  
+    v_req   UTL_HTTP.REQ;  -- HTTP request ID
+    v_resp  UTL_HTTP.RESP;  -- HTTP response ID
+    v_value VARCHAR2(1024); -- HTTP response data
+    v_status VARCHAR2(160);   -- Status of the request
+    v_call VARCHAR2(2000);  -- The request URL
   BEGIN
 
     -- Twitter update url
@@ -28,6 +43,18 @@ AS
     -- encoded status tring                  
     v_status := utl_url.escape(
       url => 'status=' || SUBSTR(p_string,1,140));
+      
+    -- Authenticate via proxy
+    -- Proxy string looks like 'http://username:password@proxy.com'  
+    -- p_no_domains is a list of domains not to use the proxy for
+    -- These settings override the defaults that are configured at the database level
+    IF p_proxy_url IS NOT NULL
+    THEN
+      Utl_Http.set_proxy (
+        proxy                 => p_proxy_url,
+        no_proxy_domains      => p_no_domains
+        );
+    END IF;
                   
     -- Has to be a POST for status update              
     v_req := UTL_HTTP.BEGIN_REQUEST(
